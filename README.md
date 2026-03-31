@@ -1,8 +1,6 @@
 # LLM-Security-Lab-2026
 
-## 🛡️ LLM Security Lab: Prompt Injection Defenses
-
-Welcome to the LLM Security Lab! In this lab, you will explore the fascinating and critical area of Large Language Model (LLM) security, specifically focusing on **prompt injection** and **jailbreaking** techniques. Your mission, should you choose to accept it, is to build and implement robust defenses to protect a chatbot from malicious user inputs.
+Welcome to the LLM Security Lab! In this lab, you will explore the fascinating and critical area of Large Language Model (LLM) security, specifically focusing on **jailbreaking** techniques. Your mission, should you choose to accept it, is to build and implement robust defenses to protect a chatbot from malicious user inputs.
 
 ### 🎯 Your Goal
 
