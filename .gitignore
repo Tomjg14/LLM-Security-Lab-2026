@@ -1,0 +1,13 @@
+# Environment variables
+.env
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Streamlit specific
+.streamlit/
+
+# Operating System files
+.DS_Store
+Thumbs.db
