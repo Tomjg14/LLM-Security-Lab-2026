@@ -5,7 +5,7 @@ def sanitize_input(user_input):
     """
     blocked_words = [] # Add words to this list to block them!
     
-    # Example defense (Students will build on this):
+    # Example defense:
     for word in blocked_words:
         if word.lower() in user_input.lower():
             return "[SYSTEM ALERT: Malicious input detected. Prompt blocked.]"
