@@ -40,8 +40,14 @@ Before you begin, ensure you have the following installed:
       cp .env.example .env
       ```
     - Open the newly created `.env` file.
-    - **Uncomment** the lines for "When using Ollama" and ensure `BASE_URL` points to your local Ollama instance (default is `http://localhost:11434/v1`).
-    - **Comment out** the lines for "When using chat.science.ru.nl" if you are running locally.
+    - If you want to make use of Ollama:
+        - **Uncomment** the lines below "When using Ollama" and ensure `BASE_URL` points to your local Ollama instance (default is `http://localhost:11434/v1`).
+    - If you want to make use of the [Radboud On-Premise LLM service](https://cncz.science.ru.nl/en/news/2026-02-05_local_llm_chat/):
+        - **Uncomment** the lines for "When using chat.science.ru.nl".
+        - Go to [chat.science.ru.nl](https://chat.science.ru.nl/) and log in using your science credentials.
+        - In the top right hand corner click on your profile and go to settings.
+        - Within Settings go to Account and in the bottom you can create your own API keys.
+        - Inside the .env file replace the "your_api_key_here" part with your own API keys.
 
     Your `.env` file should look similar to this for local Ollama usage:
 
