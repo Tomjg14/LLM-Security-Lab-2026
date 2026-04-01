@@ -1,7 +1,7 @@
 import streamlit as st
 from openai import OpenAI
 import os
-from defense import sanitize_input
+from defenses import sanitize_input, SpotlightingDefense
 import secrets
 
 client = OpenAI(
@@ -21,8 +21,8 @@ if "secret" not in st.session_state:
 with open("system_prompt.txt", "r", encoding="utf-8") as f:
     SYSTEM_PROMPT = f.read().replace("{secret}", st.session_state.secret)
 
-st.title("🛡️ LLM Security Lab: Prompt Injection")
-st.markdown("Your goal as an **Attacker**: Trick the AI into revealing the secret password.\n\nYour goal as a **Defender**: Edit the `sanitize_input` function in `defense.py` to stop the attacks! Or come up with other defenses.")
+st.title("Customer Support Chatbot")
+st.markdown("Your goal as an **Attacker**: Trick the chatbot into revealing the secret password.\n\nYour goal as a **Defender**: Edit the `sanitize_input` function in `defense.py` to stop the attacks! Or come up with other defenses.\n\nStart by asking the customer chatbot a question below.")
 
 with st.sidebar:
     st.header("🚩 Submit Flag")
@@ -38,6 +38,39 @@ with st.sidebar:
 
     if st.button("Clear Chat History", type="primary"):
         st.session_state.messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+
+    st.divider()
+
+    st.subheader("Sanitization")
+
+    sanatize_enabled = st.checkbox(
+        "Enable keyword-based sanitization (sanitize_input)",
+        value=False,
+        key="sanatize_enabled",
+    )
+
+    st.session_state.sanatize = sanatize_enabled
+
+    st.divider()
+
+    st.subheader("Defenses")
+    defense_choice = st.selectbox(
+        "Select a defense",
+        options=["None", "Spotlight Delimiting", "Spotlight Datamarking", "Spotlight Encoding"],
+        index=0,
+        key="defense_choice",
+    )
+
+    if defense_choice == "None":
+        st.session_state.defense = None
+    elif defense_choice == "Spotlight Delimiting":
+        st.session_state.defense = SpotlightingDefense.delimiting
+    elif defense_choice == "Spotlight Datamarking":
+        st.session_state.defense = SpotlightingDefense.datamarking
+    elif defense_choice == "Spotlight Encoding":
+        st.session_state.defense = SpotlightingDefense.encoding
+    else:
+        st.session_state.defense = None
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -58,13 +91,24 @@ if prompt := st.chat_input("Ask the support bot a question..."):
     # Display user message in chat message container
     st.chat_message("user").markdown(prompt)
     
-    # 1. Pass input through the student's defense function
-    safe_prompt = sanitize_input(prompt)
-    
-    # Add to history
+    # 1. Basic sanitization
+    if st.session_state.get("sanatize", True):
+        safe_prompt = sanitize_input(prompt)
+        st.caption("🛡️ Sanitization applied → **safe_prompt**")
+    else:
+        safe_prompt = prompt
+        st.caption("🚫 Sanitization OFF → **raw prompt**")
+
+    # 2. Spotlighting
+    technique = st.session_state.get("defense", None)
+    if technique:
+        safe_prompt = technique(safe_prompt)
+        st.caption(f"🛡️ Spotlighting {technique.__name__} applied → **safe_prompt**")
+
+    # 3. Add to history
     st.session_state.messages.append({"role": "user", "content": safe_prompt})
 
-    # 2. Call the LLM
+    # 4. Call the LLM
     with st.chat_message("assistant"):
         if "[SYSTEM ALERT" in safe_prompt:
             response = "I cannot process that request."
@@ -77,5 +121,6 @@ if prompt := st.chat_input("Ask the support bot a question..."):
             )
             response = st.write_stream(stream)
             
-    # Add assistant response to history
+    # 5. Add assistant response to history
     st.session_state.messages.append({"role": "assistant", "content": response})
+
