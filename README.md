@@ -1,6 +1,6 @@
 # LLM-Security-Lab-2026
 
-Welcome to the LLM Security Lab! In this lab, you will explore the fascinating and critical area of Large Language Model (LLM) security, specifically focusing on **jailbreaking** techniques. Your mission, should you choose to accept it, is to build and implement robust defenses to protect a chatbot from malicious user inputs.
+In this lab, you will explore the fascinating and critical area of Large Language Model (LLM) security, specifically focusing on **jailbreaking** techniques. Your task is to build and implement robust defenses to protect a chatbot from malicious user inputs.
 
 ### 🎯 Your Goal
 
@@ -14,8 +14,10 @@ Follow these steps to set up your local development environment and get the chat
 
 Before you begin, ensure you have the following installed:
 
-1.  **Docker Desktop**: This lab uses `docker-compose` to manage the application and its dependencies. Download and install Docker Desktop from docker.com.
-2.  **Ollama**: We will be running a local LLM using Ollama. Download and install Ollama from ollama.com.
+1.  **Docker Desktop**: This lab uses `docker-compose` to manage the application and its dependencies.
+    - Download and install Docker Desktop from [docker.com](https://www.docker.com/products/docker-desktop/).
+2.  **Ollama**: We will be running a local LLM using Ollama.
+    - Download and install Ollama from [ollama.com](https://ollama.com/download).
     - After installation, pull a model. For example: `llama3.2`. Open your terminal and run:
       ```bash
       ollama pull llama3.2
@@ -33,19 +35,19 @@ Before you begin, ensure you have the following installed:
 
 2.  **Configure Environment Variables**:
     The project uses a `.env` file for configuration.
-    - Copy the example environment file:
+    - Copy or rename the example environment file to `.env`:
       ```bash
       cp .env.example .env
       ```
     - Open the newly created `.env` file.
     - If you want to make use of Ollama:
-        - **Uncomment** the lines below "When using Ollama" and ensure `BASE_URL` points to your local Ollama instance (default is `http://localhost:11434/v1`).
+      - **Uncomment** the lines below "When using Ollama" and ensure `BASE_URL` points to your local Ollama instance (default is `http://localhost:11434/v1`).
     - If you want to make use of the [Radboud On-Premise LLM service](https://cncz.science.ru.nl/en/news/2026-02-05_local_llm_chat/):
-        - **Uncomment** the lines for "When using chat.science.ru.nl".
-        - Go to [chat.science.ru.nl](https://chat.science.ru.nl/) and log in using your science credentials.
-        - In the top right hand corner click on your profile and go to settings.
-        - Within Settings go to Account and in the bottom you can create your own API keys.
-        - Inside the .env file replace the "your_api_key_here" part with your own API keys.
+      - **Uncomment** the lines for "When using chat.science.ru.nl".
+      - Go to [chat.science.ru.nl](https://chat.science.ru.nl/) and log in using your science credentials.
+      - In the top right hand corner click on your profile and go to settings.
+      - Within Settings go to Account and in the bottom you can create your own API keys.
+      - Inside the .env file replace the "your_api_key_here" part with your own API keys.
 
     Your `.env` file should look similar to this for local Ollama usage:
 
@@ -88,6 +90,6 @@ Before you begin, ensure you have the following installed:
 
 The chatbot is designed to be a helpful customer support agent. However, it has a secret administrative override password embedded in its system prompt. Your task as an "attacker" (to test your defenses) is to craft prompts that trick the LLM into revealing this secret password.
 
-As a "defender," your job is to modify the `sanitize_input` function in `defense.py` to detect and neutralize these malicious prompts before they reach the LLM. Experiment with different injection techniques and see if your defenses hold up!
+As a "defender," your job is to modify the `sanitize_input` function and `SpotlightingDefense` class in `defense.py` to detect and neutralize these malicious prompts before they reach the LLM. Experiment with different jailbreak techniques and see if your defenses hold up!
 
 Good luck, and happy hacking (defensively)!

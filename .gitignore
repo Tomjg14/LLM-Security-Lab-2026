@@ -14,3 +14,12 @@ Thumbs.db
 
 # Answer files
 defenses_filled.py
+
+# Any zip files
+*.zip
+
+# Any tex files
+*.tex
+
+# Any pdf files
+*.pdf
